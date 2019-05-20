@@ -5,40 +5,47 @@ from datetime import date
 import numpy as np
 import pandas as pd
 from app import df, get_game_data, game_sequence
+from strategies import home_team
 
 class Game:
     # df is the master pandas DataFrame imported from the local csv file
     # game class represents all the attributes for a given game by ingesting two rows from the dataframe
     # def __init__(self, data=df, game_num=int()):
+    # ['gameno', 'team', 'visitor_home', 'team_run_total', 'total_runs_game',
+    #    'money_line_close', 'money_line_open', 'over_under_line_close',
+    #    'over_under_line_open', 'over_under_odds_close', 'over_under_odds_open',
+    #    'pitcher', 'rot', 'run_dif_game', 'run_line_close',
+    #    'run_line_odds_close']
     def __init__(self, visitor_row, home_row):
+        self.date = visitor_row.date
+        self.gameno = visitor_row.gameno
+        self.total_runs_game = visitor_row.total_runs_game
+        
+        self.over_under_line_open = visitor_row.over_under_line_open
+        self.over_under_line_close = visitor_row.over_under_line_close
+        self.over_odds_open = visitor_row.over_under_odds_open
+        self.over_odds_close = visitor_row.over_under_odds_close
+        self.under_odds_open = home_row.over_under_odds_open
+        self.under_odds_close = home_row.over_under_odds_close
+        
+        self.visitor_team = visitor_row.team
+        self.visitor_run_total = visitor_row.team_run_total
+        self.visitor_money_line_open = visitor_row.money_line_open
+        self.visitor_money_line_close = visitor_row.money_line_close
+        self.visitor_pitcher = visitor_row.pitcher
+        self.visitor_run_dif = visitor_row.run_dif_game
+        self.visitor_run_line_close = visitor_row.run_line_close
+        self.visitor_run_line_odds_close = visitor_row.run_line_odds_close
+        
+        self.home_team = home_row.team
+        self.home_run_total = home_row.team_run_total
+        self.home_money_line_open = home_row.money_line_open
+        self.home_money_line_close = home_row.money_line_close
+        self.home_pitcher = home_row.pitcher
+        self.home_run_dif = home_row.run_dif_game
+        self.home_run_line_close = home_row.run_line_close
+        self.home_run_line_odds_close = home_row.run_line_odds_close
 
-        self.date = None
-        self.opening_ou_line = visitor_row['']
-        self.opening_over_odds = int()
-        self.opening_under_odds = int()
-        self.closing_ou_line = float()
-        self.closing_over_odds = int()
-        self.closing_under_odds = int()
-        self.totalruns = int()
-        self.run_dif_game = int()
-
-        self.home_team = None
-        self.away_team = None
-        self.money_line_fav_runs = None
-        self.money_line_dog_runs = None
-        self.opening_money_line_fav_team = None
-        self.opening_money_line_dog_team = None
-        self.closing_money_line_fav_team = None
-        self.closing_money_line_dog_team = None
-        self.opening_money_line_fav_line = None
-        self.opening_money_line_dog_line = None
-        self.closing_money_line_fav_line = None
-        self.closing_money_line_dog_line = None
-        self.opening_money_line_fav_odds = None
-        self.opening_money_line_dog_odds = None
-        self.closing_money_line_fav_odds = None
-        self.closing_money_line_dog_odds = None
-    
     def money_line_bet(self, strategy_func):
         choice = strategy_func(self)
         if choice is None:
@@ -49,11 +56,10 @@ class Game:
             return -1
 
     def winner(self):
-        if self.home_run_dif_game > 0:
+        if self.home_run_dif > 0:
             return 'H'
         else:
             return 'V'
-    
     
     def bet_payout(self, winner):
         if winner == 'H':
@@ -63,9 +69,14 @@ class Game:
         #     return 1 / (abs(odds)/100)
 
 if __name__ == "__main__":
-    for visitor_row, home_row in game_sequence():
-        g = Game(visitor_row, home_row)
-        print(g.winner())
+    games = []
+    # for visitor_row, home_row in game_sequence():
+    #     games.append(Game(visitor_row, home_row))
+    
+        # print(g.money_line_bet(home_team))
+        # print(g.home_team)
+        # print(g.visitor_team)
+
         
     # g = Game(game_num=0)
     # print('Game Date = {}'.format(g.date))
