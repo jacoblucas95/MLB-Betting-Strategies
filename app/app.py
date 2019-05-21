@@ -25,7 +25,10 @@ def game_sequence(df=df):
 
 if __name__ == "__main__":
     games = game_sequence()
+<<<<<<< HEAD
 
             
 
 
+=======
+>>>>>>> 0ea192a67afb7e78c36c9118d9aa6f83592140f6

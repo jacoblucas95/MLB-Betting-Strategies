@@ -84,6 +84,7 @@ def create_games_generator():
         bet_outcomes.append(bet_outcome)
         count += bet_outcome
         bet_outcome_count.append(count) 
+<<<<<<< HEAD
         data = {'Date': dates, 'Bet_Outcomes': bet_outcomes, 'Portfolio Value': bet_outcome_count}
     return data
     # pd.DataFrame(data).to_csv('test.csv', index=False)
@@ -94,3 +95,19 @@ def create_games_generator():
 if __name__ == "__main__":
     print(create_games_generator())
     # write_to_testcsv()
+=======
+    return dates, bet_outcome_count
+    # for visitor_row, home_row in game_sequence(df=date_range()):
+    #     games.append(Game(visitor_row, home_row))
+    #     return games
+
+def write_to_testcsv():
+    csvdata = create_games_generator()
+    with open('test.csv', 'w', newline='') as f:
+        # fieldnames = ['date', 'balance']
+        writer = csv.writer(f)
+        writer.writerows(zip(csvdata))
+
+if __name__ == "__main__":
+    write_to_testcsv()
+>>>>>>> 0ea192a67afb7e78c36c9118d9aa6f83592140f6
