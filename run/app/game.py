@@ -55,7 +55,7 @@ class Game:
         if choice is None:
             return 0
         elif self.run_line_winner(choice):
-            return 1
+            return 1 + (1 * odds_payout(odds = self.home_run_line_odds_close))
         else:
             return -1
     
@@ -160,7 +160,7 @@ def create_betting_results(bet_type, strategy_func, df=df):
     return data
     
 if __name__ == "__main__":
-    print(create_betting_results('ou', overs, date_range()))
+    print(create_betting_results('rl', home_team, date_range()))
     
     # write_to_testcsv()
     # pd.DataFrame(data).to csv('test.csv', index=False)

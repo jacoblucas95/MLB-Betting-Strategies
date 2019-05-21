@@ -38,4 +38,4 @@ def root():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify(game.create_games_generator())
+		return jsonify(game.create_betting_results())
