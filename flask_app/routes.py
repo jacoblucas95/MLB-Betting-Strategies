@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+
+from app import game
 
 from flask import Flask,jsonify,request
 from flask_cors import CORS
@@ -37,10 +38,10 @@ def root():
 		}
 	})
 
-@app.route('/api/dataset', methods=['GET','POST'])
+@app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify({})
+		return jsonify(game.create_games_generator())
 
 
 if __name__ == '__main__':
