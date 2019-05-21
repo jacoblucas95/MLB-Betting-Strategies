@@ -2,9 +2,9 @@ import os
 import pandas as pd
 import numpy as np
 
-csvfile = os.path.join(os.path.dirname(os.getcwd()), 'run', 'setup', 'data', 'baseball.csv')
+csvfile = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.csv')
 df = pd.read_csv(csvfile, low_memory=False)
-
+    
 def fix_df_types(df):
     df.drop(['Unnamed: 0'], axis=1, inplace=True)
     df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
@@ -25,6 +25,7 @@ def game_sequence(df=df):
 
 if __name__ == "__main__":
     games = game_sequence()
+    print(games)
 
             
 
