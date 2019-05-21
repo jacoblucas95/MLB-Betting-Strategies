@@ -4,8 +4,10 @@ from os.path import dirname
 from datetime import date
 import numpy as np
 import pandas as pd
-from app import df, get_game_data, game_sequence
+from app import get_game_data, game_sequence
 from strategies import home_team
+from game_filter import date_range
+import csv
 
 class Game:
     # df is the master pandas DataFrame imported from the local csv file
@@ -68,33 +70,31 @@ class Game:
         # else:
         #     return 1 / (abs(odds)/100)
 
-if __name__ == "__main__":
-    games = []
-    # for visitor_row, home_row in game_sequence():
+    
+def create_games_generator():
+    dates = []
+    bet_outcomes = []
+    count = 0
+    bet_outcome_count = []
+    for visitor_row, home_row in game_sequence(df=date_range()):
+        game = Game(visitor_row, home_row)
+        date = game.date
+        bet_outcome = game.money_line_bet(home_team)
+        dates.append(date)
+        bet_outcomes.append(bet_outcome)
+        count += bet_outcome
+        bet_outcome_count.append(count) 
+    return dates, bet_outcome_count
+    # for visitor_row, home_row in game_sequence(df=date_range()):
     #     games.append(Game(visitor_row, home_row))
-    
-        # print(g.money_line_bet(home_team))
-        # print(g.home_team)
-        # print(g.visitor_team)
+    #     return games
 
-        
-    # g = Game(game_num=0)
-    # print('Game Date = {}'.format(g.date))
-    # print('Over-Under Closing Line = {}'.format(g.totalruns_closing_line))
-    # print('Over-Under Total Runs Home Team Odds = {}'.format(g.totalruns_home_odds))
-    # print('Over-Under Total Runs Away Team Odds = {}'.format(g.totalruns_away_odds))
-    # print('Home Team = {}'.format(g.home_team))
-    # print('Away Team = {}'.format(g.away_team))
+def write_to_testcsv():
+    csvdata = create_games_generator()
+    with open('test.csv', 'w', newline='') as f:
+        # fieldnames = ['date', 'balance']
+        writer = csv.writer(f)
+        writer.writerows(zip(csvdata))
 
-
-    
-    # t = Test()
-    # t.field1 = "something"
-    # t.field2 = "silly"
-    # t.save()
-    # t.field2 = "different"
-    # t.save()
-
-    # objects = Test.select_many()
-    # for obj in objects:
-    #     print("pk = ", obj.pk, obj.field1, obj.field2)
+if __name__ == "__main__":
+    write_to_testcsv()
