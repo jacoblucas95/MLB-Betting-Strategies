@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 
-csvfile = os.path.join(os.path.dirname(os.getcwd()), 'setup', 'data', 'baseball.csv')
+csvfile = os.path.join(os.path.dirname(os.getcwd()), 'run', 'setup', 'data', 'baseball.csv')
 df = pd.read_csv(csvfile, low_memory=False)
 
 def fix_df_types(df):
@@ -25,10 +25,7 @@ def game_sequence(df=df):
 
 if __name__ == "__main__":
     games = game_sequence()
-<<<<<<< HEAD
 
             
 
 
-=======
->>>>>>> 0ea192a67afb7e78c36c9118d9aa6f83592140f6

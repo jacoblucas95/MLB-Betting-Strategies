@@ -5,8 +5,8 @@ from datetime import date
 import numpy as np
 import pandas as pd
 from app import get_game_data, game_sequence
-from strategies import home_team
-from game_filter import date_range
+from app.strategies import home_team
+from app.game_filter import date_range
 import csv
 
 class Game:
@@ -62,14 +62,20 @@ class Game:
             return 'H'
         else:
             return 'V'
-    
+'''    
     def bet_payout(self, winner):
         if winner == 'H':
             pass
         #     return abs()/100
         # else:
         #     return 1 / (abs(odds)/100)
+'''
 
+def odds_payout(odds):
+    if odds > 0:
+        return abs(odds)/100
+    else:
+        return 1 / (abs(odds)/100)
     
 def create_games_generator():
     dates = []
@@ -84,7 +90,6 @@ def create_games_generator():
         bet_outcomes.append(bet_outcome)
         count += bet_outcome
         bet_outcome_count.append(count) 
-<<<<<<< HEAD
         data = {'Date': dates, 'Bet_Outcomes': bet_outcomes, 'Portfolio Value': bet_outcome_count}
     return data
     # pd.DataFrame(data).to_csv('test.csv', index=False)
@@ -95,19 +100,3 @@ def create_games_generator():
 if __name__ == "__main__":
     print(create_games_generator())
     # write_to_testcsv()
-=======
-    return dates, bet_outcome_count
-    # for visitor_row, home_row in game_sequence(df=date_range()):
-    #     games.append(Game(visitor_row, home_row))
-    #     return games
-
-def write_to_testcsv():
-    csvdata = create_games_generator()
-    with open('test.csv', 'w', newline='') as f:
-        # fieldnames = ['date', 'balance']
-        writer = csv.writer(f)
-        writer.writerows(zip(csvdata))
-
-if __name__ == "__main__":
-    write_to_testcsv()
->>>>>>> 0ea192a67afb7e78c36c9118d9aa6f83592140f6

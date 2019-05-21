@@ -2,7 +2,11 @@
 import os
 import pandas as pd
 from datetime import date
-from app import df
+from app.app import fix_df_types
+
+csvfile = os.path.join(os.path.dirname(os.getcwd()), 'run', 'setup', 'data', 'baseball.csv')
+df = pd.read_csv(csvfile, low_memory=False)
+df = fix_df_types(df)
 
 def date_range(df=df, start_date=date(2018,1,1), end_date=date(2019,12,31)):
     df['date'] = pd.to_datetime(df['date'])
@@ -11,4 +15,4 @@ def date_range(df=df, start_date=date(2018,1,1), end_date=date(2019,12,31)):
 
 
 if __name__ == '__main__':
-    print(date_range())
+    print(date_range)
