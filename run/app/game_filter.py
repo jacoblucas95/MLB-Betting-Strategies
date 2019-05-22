@@ -11,21 +11,20 @@ df = fix_df_types(df)
 
 class Filter:
     
-    def __init__(self, start_date, end_date, h_a, f_d):
+    def __init__(self, start_date, end_date, visitor_home, run_line_fav, money_line_fav, odds):
         self.start_date = start_date
         self.end_date = end_date
         self.h_a = h_a
         self.f_d = f_d
-        self.fav = fav
         
     def get_df(self):
-        df['date'] = pd.to_datetime(df['date'])
-        df2 = df[df['date'].isin(pd.date_range(self.start_date,self.end_date))]
-        if self.f_d == 'f':
-            df2 = df.loc[(df['visitor_home'] == self.h_a) & (df['money_line_close'] < 0)]
+        self.df['date'] = pd.to_datetime(self.df['date'])
+        df2 = self.df[self.df['date'].isin(pd.date_range(self.start_date, self.end_date))]
+        if self.favorite_underdog == 'fav':
+            df2 = df2.loc[(df2['visitor_home'] == self.visitor_home) & (df2['money_line_close'] < 0)]
         else:
-            df2 = df.loc[(df['visitor_home'] == self.h_a) & (df['money_line_close'] > 0)]
+            df2 = df2.loc[(df2['visitor_home'] == self.visitor_home) & (df2['money_line_close'] > 0)]
         return df2
 
 if __name__ == '__main__':
-    print()
+    Filter(date(2018, 1, 1), date.today(), visitor=True, favorite=False)
