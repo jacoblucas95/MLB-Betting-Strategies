@@ -86,8 +86,13 @@ class Game:
         choice = strategy_func(self)
         if choice is None:
             return 0
+<<<<<<< HEAD
         elif self.run_line_winner(choice)[2]:
             return 1 * odds_payout(self.run_line_winner(choice)[0], favorite=self.run_line_winner(choice)[1], win=self.run_line_winner(choice)[2])
+=======
+        elif self.run_line_winner(choice):
+            return 1 + (1 * odds_payout(odds = self.home_run_line_odds_close))
+>>>>>>> 7ae1c76d75f36167626141b5ff249889aa2b0409
         else:
             return -1 * odds_payout(self.run_line_winner(choice)[0], favorite=self.run_line_winner(choice)[1], win=self.run_line_winner(choice)[2])
     
@@ -221,5 +226,15 @@ def create_betting_results(bet_type, strategy_func, df=df):
     return data
     
 if __name__ == "__main__":
+<<<<<<< HEAD
     csvData = pd.DataFrame(create_betting_results('rl', underdogs, date_range()))
     csvData.to_csv('test.csv')
+=======
+    print(create_betting_results('rl', home_team, date_range()))
+    
+    # write_to_testcsv()
+    # pd.DataFrame(data).to csv('test.csv', index=False)
+    # for visitor_row, home_row in game_sequence(df=date_range()):
+    #     games.append(Game(visitor_row, home_row))
+    #     return games
+>>>>>>> 7ae1c76d75f36167626141b5ff249889aa2b0409
