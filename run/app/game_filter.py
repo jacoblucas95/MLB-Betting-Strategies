@@ -16,6 +16,7 @@ class Filter:
         self.end_date = end_date
         self.h_a = h_a
         self.f_d = f_d
+        self.fav = fav
         
     def get_df(self):
         df['date'] = pd.to_datetime(df['date'])
