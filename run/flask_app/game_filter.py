@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from datetime import date
 
-from app import fix_df_types
+from .handler import fix_df_types
 
 csvfile = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.csv')
 df = pd.read_csv(csvfile, low_memory=False)

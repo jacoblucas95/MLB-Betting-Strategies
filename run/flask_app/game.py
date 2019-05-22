@@ -3,9 +3,9 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from app import get_game_data, game_sequence, df, fix_df_types
-from strategies import home_team, visitor_team, favorites, underdogs, overs, unders
-from game_filter import Filter
+from .handler import get_game_data, game_sequence, df, fix_df_types
+from .strategies import home_team, visitor_team, favorites, underdogs, overs, unders
+from .game_filter import Filter
 
 class Game:
     def __init__(self, visitor_row, home_row):

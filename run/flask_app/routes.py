@@ -1,9 +1,8 @@
 from flask import jsonify,request
-
 from .run import app
-from app.game import create_betting_results
-from app.strategies import overs
-from app.game_filter import date_range
+
+from flask_app import create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites
+# from app.game_filter import date_range
 
 
 @app.route('/')
@@ -40,4 +39,4 @@ def root():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify(game.create_betting_results())
+		return jsonify(create_betting_results())

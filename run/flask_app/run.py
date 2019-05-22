@@ -4,4 +4,4 @@ from flask_cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 
-from . import routes
+import flask_app.routes

@@ -23,7 +23,7 @@ def game_sequence(df=df):
 
 if __name__ == "__main__":
     games1 = game_sequence() 
-    print(games)
+    print(games1)
 
             
 
