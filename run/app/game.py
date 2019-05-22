@@ -38,7 +38,7 @@ class Game:
         self.home_run_line_close = home_row.run_line_close
         self.home_run_line_odds_close = home_row.run_line_odds_close
 
-        if visitor_row.over_odds_close > home_row.under_odds_close:
+        if visitor_row.over_under_odds_close > home_row.over_under_odds_close:
             self.over_is_favorite = True
         else:
             self.over_is_favorite = False
@@ -248,7 +248,7 @@ def create_betting_results(bet_type, strategy_func, df=df):
     data = []
     for visitor_row, home_row in game_sequence(df):
         game = Game(visitor_row, home_row)
-        date = game.date
+        date_ = game.date
         gameno = game.gameno
         if bet_type == 'ml':
             bet_outcome = game.money_line_bet(strategy_func)
@@ -259,10 +259,9 @@ def create_betting_results(bet_type, strategy_func, df=df):
         else:
             return None
         count += bet_outcome
-        data.append({'Date': date, 'Bet_Outcomes': bet_outcome, 'Portfolio Value': count, 'Gameno':gameno})
+        data.append({'Date': date_, 'Bet_Outcomes': bet_outcome, 'Portfolio Value': count, 'Gameno':gameno})
     return data
     
 if __name__ == "__main__":
-    f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
-    csvData = pd.DataFrame(create_betting_results('ml', favorites, f.get_df()))
+    csvData = pd.DataFrame(create_betting_results('ml', favorites))
     csvData.to_csv('test.csv')
