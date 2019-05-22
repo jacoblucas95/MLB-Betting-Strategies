@@ -10,8 +10,6 @@ def fix_df_types(df):
     df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
     return df
 
-# df = fix_df_types(df)
-
 def get_game_data(gameno, df=df):
     game_test = df['gameno'] == gameno
     game_rows = df[game_test]
@@ -24,7 +22,7 @@ def game_sequence(df=df):
         yield df.iloc[index], df.iloc[index+1]
 
 if __name__ == "__main__":
-    games = game_sequence()
+    games1 = game_sequence() 
     print(games)
 
             

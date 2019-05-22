@@ -1,10 +1,10 @@
 # Team Bets
 
 def home_team(game):
-    return 'H'
+    return 'h'
 
 def visitor_team(game):
-    return 'V'
+    return 'v'
 
 # Game Bets
 
@@ -20,8 +20,4 @@ def favorites(game):
 def underdogs(game):
     return 'dog'
 
-
-# def home_underdogs(df=df):
-#     df2 = df.loc[(df['visitor_home'] == 'H') & (df['money_line_close'] > 0)]
-#     return df2
 
