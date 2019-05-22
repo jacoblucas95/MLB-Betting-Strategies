@@ -156,37 +156,35 @@ class Game:
                     return 'u'
                 else:
                     return 'o'
-        
         if choice == 'fav' or choice == 'dog':
             choice = convert_choice(choice)
-        else:
         # returns a tuple (odds, bet_on_favorite=True/False, win_or_lose=True/False)
-            if self.total_runs_game == self.over_under_line_close:
-                return None
-            if choice == 'o':
-                if self.over_is_favorite:
-                    if self.total_runs_game > self.over_under_line_close:
-                        return self.over_odds_close, True, True
-                    else:
-                        return self.over_odds_close, True, False
+        if self.total_runs_game == self.over_under_line_close:
+            return None
+        if choice == 'o':
+            if self.over_is_favorite:
+                if self.total_runs_game > self.over_under_line_close:
+                    return self.over_odds_close, True, True
                 else:
-                    if self.total_runs_game > self.over_under_line_close:
-                        return self.over_odds_close, False, True
-                    else:
-                        return self.over_odds_close, False, False
-            elif choice == 'u':
-                if self.over_is_favorite:
-                    if self.total_runs_game > self.over_under_line_close:
-                        return self.under_odds_close, False, False
-                    else:
-                        return self.under_odds_close, False, True
-                else:    
-                    if self.total_runs_game > self.over_under_line_close:
-                        return self.under_odds_close, True, False
-                    else:
-                        return self.under_odds_close, True, True
+                    return self.over_odds_close, True, False
             else:
-                return ValueError
+                if self.total_runs_game > self.over_under_line_close:
+                    return self.over_odds_close, False, True
+                else:
+                    return self.over_odds_close, False, False
+        elif choice == 'u':
+            if self.over_is_favorite:
+                if self.total_runs_game > self.over_under_line_close:
+                    return self.under_odds_close, False, False
+                else:
+                    return self.under_odds_close, False, True
+            else:    
+                if self.total_runs_game > self.over_under_line_close:
+                    return self.under_odds_close, True, False
+                else:
+                    return self.under_odds_close, True, True
+        else:
+            return ValueError
     
     def money_line_bet(self, strategy_func):
         choice = strategy_func(self)
