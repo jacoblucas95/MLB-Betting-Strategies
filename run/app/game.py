@@ -38,6 +38,11 @@ class Game:
         self.home_run_line_close = home_row.run_line_close
         self.home_run_line_odds_close = home_row.run_line_odds_close
 
+        if visitor_row.over_odds_close > home_row.under_odds_close:
+            self.over_is_favorite = True
+        else:
+            self.over_is_favorite = False
+
         if visitor_row.money_line_close < home_row.money_line_close:
             self.visitor_team_is_money_line_favorite = True
             self.favorite_money_line_team = visitor_row.team
@@ -80,19 +85,12 @@ class Game:
             self.underdog_run_line_run_dif_game = visitor_row.run_dif_game
             self.favorite_run_line_run_dif_game = home_row.run_dif_game
 
-    #TODO complete function with odds included
-
     def run_line_bet(self, strategy_func):
         choice = strategy_func(self)
         if choice is None:
             return 0
-<<<<<<< HEAD
         elif self.run_line_winner(choice)[2]:
             return 1 * odds_payout(self.run_line_winner(choice)[0], favorite=self.run_line_winner(choice)[1], win=self.run_line_winner(choice)[2])
-=======
-        elif self.run_line_winner(choice):
-            return 1 + (1 * odds_payout(odds = self.home_run_line_odds_close))
->>>>>>> 7ae1c76d75f36167626141b5ff249889aa2b0409
         else:
             return -1 * odds_payout(self.run_line_winner(choice)[0], favorite=self.run_line_winner(choice)[1], win=self.run_line_winner(choice)[2])
     
@@ -137,63 +135,104 @@ class Game:
         choice = strategy_func(self)
         if choice is None:
             return 0
-        elif self.over_under_winner(choice) == True:
-            return 1
-        elif self.over_under_winner(choice) == False:
-            return -1
         elif self.over_under_winner(choice) == None:
             return 0
+        elif self.over_under_winner(choice)[2]:
+            return 1 * odds_payout(self.over_under_winner(choice)[0], favorite=self.over_under_winner(choice)[1], win=self.over_under_winner(choice)[2])
+        elif self.over_under_winner(choice)[2] == False:
+            return -1 * odds_payout(self.over_under_winner(choice)[0], favorite=self.over_under_winner(choice)[1], win=self.over_under_winner(choice)[2])
         else:
             return ValueError
-    
+
     def over_under_winner(self, choice):
-        if choice == 'o':
-            if self.total_runs_game > self.over_under_line_close:
-                return True
-            elif self.total_runs_game < self.over_under_line_close:
-                return False
+        def convert_choice(choice):
+            if choice == 'fav':
+                if self.over_is_favorite:
+                    return 'o'
+                else:
+                    return 'u'
             else:
-                return None
-        elif choice == 'u':
-            if self.total_runs_game > self.over_under_line_close:
-                return False
-            elif self.total_runs_game < self.over_under_line_close:
-                return True
-            else:
-                return None
+                if self.over_is_favorite:
+                    return 'u'
+                else:
+                    return 'o'
+        
+        if choice == 'fav' or choice == 'dog':
+            choice = convert_choice(choice)
         else:
-            return ValueError
+        # returns a tuple (odds, bet_on_favorite=True/False, win_or_lose=True/False)
+            if self.total_runs_game == self.over_under_line_close:
+                return None
+            if choice == 'o':
+                if self.over_is_favorite:
+                    if self.total_runs_game > self.over_under_line_close:
+                        return self.over_odds_close, True, True
+                    else:
+                        return self.over_odds_close, True, False
+                else:
+                    if self.total_runs_game > self.over_under_line_close:
+                        return self.over_odds_close, False, True
+                    else:
+                        return self.over_odds_close, False, False
+            elif choice == 'u':
+                if self.over_is_favorite:
+                    if self.total_runs_game > self.over_under_line_close:
+                        return self.under_odds_close, False, False
+                    else:
+                        return self.under_odds_close, False, True
+                else:    
+                    if self.total_runs_game > self.over_under_line_close:
+                        return self.under_odds_close, True, False
+                    else:
+                        return self.under_odds_close, True, True
+            else:
+                return ValueError
     
     def money_line_bet(self, strategy_func):
         choice = strategy_func(self)
         if choice is None:
             return 0
-        elif self.money_line_winner(choice):
-            return 1
+        elif self.money_line_winner(choice)[2]:
+            return 1 * odds_payout(self.money_line_winner(choice)[0], favorite=self.money_line_winner(choice)[1], win=self.money_line_winner(choice)[2])
         else:
-            return -1
+            return -1 * odds_payout(self.money_line_winner(choice)[0], favorite=self.money_line_winner(choice)[1], win=self.money_line_winner(choice)[2])
 
-    # def money_line_winner(self, choice):
-    #     if choice == 'h':
-    #         if self.home_run_dif > 0:
-    #             return True
-    #         else:
-    #             return False
-    #     elif choice == 'v':
-    #         if self.visitor_run_dif > 0:
-    #             return True
-    #         else:
-    #             return False
-    #     elif choice == 'fav':
-    #         if self.favorite_run_dif_game > 0:
-    #             return True
-    #         else:
-    #             return False
-    #     elif choice == 'dog':
-    #         pass
-    #     #TODO
-    #     else:
-    #         ValueError
+    def money_line_winner(self, choice):
+            # returns a tuple (odds, bet_on_favorite=True/False, win_or_lose=True/False)
+            if choice == 'h':
+                if self.visitor_team_is_money_line_favorite:
+                    if self.underdog_money_line_run_dif_game > 0:
+                        return self.underdog_money_line_close, False, True
+                    else:
+                        return self.underdog_money_line_close, False, False
+                else:
+                    if self.favorite_money_line_run_dif_game > 0:
+                        return self.favorite_money_line_close, True, True
+                    else:
+                        return self.favorite_money_line_close, True, False
+            elif choice == 'v':
+                if self.visitor_team_is_money_line_favorite:
+                    if self.favorite_money_line_run_dif_game > 0:
+                        return self.favorite_money_line_close, True, True
+                    else:
+                        return self.favorite_money_line_close, True, False
+                else:
+                    if self.underdog_money_line_run_dif_game > 0:
+                        return self.underdog_money_line_close, False, True
+                    else:
+                        return self.underdog_money_line_close, False, False
+            elif choice == 'fav':
+                if self.favorite_money_line_run_dif_game > 0:
+                    return self.favorite_money_line_close, True, True
+                else:
+                    return self.favorite_money_line_close, True, False
+            elif choice == 'dog':
+                if self.underdog_money_line_run_dif_game > 0:
+                    return self.underdog_money_line_close, False, True
+                else:
+                    return self.underdog_money_line_close, False, False
+            else:
+                return ValueError
 
 def odds_payout(odds, favorite, win):
     if win == False:
@@ -226,15 +265,5 @@ def create_betting_results(bet_type, strategy_func, df=df):
     return data
     
 if __name__ == "__main__":
-<<<<<<< HEAD
-    csvData = pd.DataFrame(create_betting_results('rl', underdogs, date_range()))
+    csvData = pd.DataFrame(create_betting_results('ml', favorites, date_range()))
     csvData.to_csv('test.csv')
-=======
-    print(create_betting_results('rl', home_team, date_range()))
-    
-    # write_to_testcsv()
-    # pd.DataFrame(data).to csv('test.csv', index=False)
-    # for visitor_row, home_row in game_sequence(df=date_range()):
-    #     games.append(Game(visitor_row, home_row))
-    #     return games
->>>>>>> 7ae1c76d75f36167626141b5ff249889aa2b0409
