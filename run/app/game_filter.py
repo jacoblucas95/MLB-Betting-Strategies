@@ -11,16 +11,13 @@ df = fix_df_types(df)
 
 class Filter:
     
-    def __init__(self, start_date, end_date, visitor_home, run_line_fav, money_line_fav, odds):
+    def __init__(self, start_date, end_date, visitor_home, favorite_underdog):
         self.start_date = start_date
         self.end_date = end_date
         self.visitor_home = visitor_home
         self.favorite_underdog = favorite_underdog
         self.df = df
 
-    def filter_date():
-        pass
-        
     def get_df(self):
         self.df['date'] = pd.to_datetime(self.df['date'])
         df2 = self.df[self.df['date'].isin(pd.date_range(self.start_date, self.end_date))]
@@ -31,4 +28,5 @@ class Filter:
         return df2
 
 if __name__ == '__main__':
-    Filter(date(2018, 1, 1), date.today(), visitor=True, favorite=False)
+    f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
+    print(f.get_df())

@@ -5,7 +5,7 @@ import pandas as pd
 
 from app import get_game_data, game_sequence, df, fix_df_types
 from strategies import home_team, visitor_team, favorites, underdogs, overs, unders
-from game_filter import date_range
+from game_filter import Filter
 
 class Game:
     def __init__(self, visitor_row, home_row):
@@ -263,5 +263,6 @@ def create_betting_results(bet_type, strategy_func, df=df):
     return data
     
 if __name__ == "__main__":
-    csvData = pd.DataFrame(create_betting_results('ml', favorites, date_range()))
+    f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
+    csvData = pd.DataFrame(create_betting_results('ml', favorites, f.get_df()))
     csvData.to_csv('test.csv')
