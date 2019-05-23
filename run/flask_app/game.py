@@ -3,9 +3,12 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from .handler import get_game_data, game_sequence, df, fix_df_types
+from .handler import get_game_data, game_sequence
 from .strategies import home_team, visitor_team, favorites, underdogs, overs, unders
-from .game_filter import Filter
+
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
+df = pd.read_pickle(pickle_path)
+test_df = df[(df['date'] > '2018-1-1 01:00:00') & (df['date'] <= '2019-5-1 04:00:00')]
 
 class Game:
     def __init__(self, visitor_row, home_row):
@@ -263,6 +266,7 @@ def create_betting_results(bet_type, strategy_func, df=df):
     return data
     
 if __name__ == "__main__":
-    f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
-    csvData = pd.DataFrame(create_betting_results('ml', favorites, f.get_df()))
-    csvData.to_csv('test.csv')
+    pass
+    # f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
+    # print(create_betting_results('ml', favorites))
+    # csvData.to_csv('test.csv')

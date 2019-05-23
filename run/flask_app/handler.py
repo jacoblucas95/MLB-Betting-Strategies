@@ -1,10 +1,10 @@
 import os
 import pandas as pd
 import numpy as np
-
-csvfile = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.csv')
-df = pd.read_csv(csvfile, low_memory=False)
     
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
+df = pd.read_pickle(pickle_path)
+
 def fix_df_types(df):
     df.drop(['Unnamed: 0'], axis=1, inplace=True)
     df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
