@@ -262,7 +262,7 @@ def create_betting_results(bet_type, strategy_func, df=df):
         else:
             return None
         count += bet_outcome
-        data.append({'Date': date_, 'Bet_Outcomes': bet_outcome, 'Portfolio Value': count, 'Gameno':gameno})
+        data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio Value': float(count), 'Gameno': int(gameno)})
     return data
     
 if __name__ == "__main__":
