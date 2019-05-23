@@ -1,8 +1,9 @@
 from flask import jsonify,request
 from datetime import date
+from pprint import pprint
 
 from .run import app
-from flask_app import Filter, create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites
+from flask_app import Filter, create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites, test_df
 # from app.game_filter import date_range
 
 
@@ -37,9 +38,13 @@ def root():
 		}
 	})
 
+@app.route('/test',  methods=['GET'])
+def test():
+	if request.method == 'GET':
+		df = test_df.to_json(orient='index')
+		return jsonify(df)
+
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
-		return jsonify(f.get_df())
-
+		return jsonify(create_betting_results('ml', favorites, df=test_df))
