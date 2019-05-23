@@ -246,7 +246,8 @@ def odds_payout(odds, favorite, win):
     else:
         return 'inputs must be true or false'
 
-def create_betting_results(bet_type, strategy_func, df=df):
+#TODO Make this function faster
+def create_betting_results(bet_type, strategy_func, bet_amt, df=df):
     count = 0
     data = []
     for visitor_row, home_row in game_sequence(df):
@@ -261,8 +262,8 @@ def create_betting_results(bet_type, strategy_func, df=df):
             bet_outcome = game.run_line_bet(strategy_func)
         else:
             return None
-        count += bet_outcome
-        data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio Value': float(count), 'Gameno': int(gameno)})
+        count += bet_amt * bet_outcome
+        data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio Value': float(count), 'Gameno':int(gameno)})
     return data
     
 if __name__ == "__main__":
