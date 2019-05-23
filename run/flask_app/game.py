@@ -1,5 +1,5 @@
 import os, csv, sqlite3, json
-from datetime import date
+from datetime import date, datetime
 import numpy as np
 import pandas as pd
 
@@ -8,11 +8,11 @@ from .strategies import home_team, visitor_team, favorites, underdogs, overs, un
 
 pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
 df = pd.read_pickle(pickle_path)
-test_df = df[(df['date'] > '2018-1-1 01:00:00') & (df['date'] <= '2019-5-1 04:00:00')]
+test_df = df[(df['date'] > '2018-5-1 01:00:00') & (df['date'] <= '2018-5-2 04:00:00')]
 
 class Game:
     def __init__(self, visitor_row, home_row):
-        self.date = visitor_row.date.date()
+        self.date = datetime.timestamp(visitor_row.date)
         self.gameno = visitor_row.gameno
         self.total_runs_game = visitor_row.total_runs_game
         
@@ -263,7 +263,7 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df=df):
         else:
             return None
         count += bet_amt * bet_outcome
-        data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio Value': float(count), 'Gameno':int(gameno)})
+        data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'Gameno':int(gameno)})
     return data
     
 if __name__ == "__main__":

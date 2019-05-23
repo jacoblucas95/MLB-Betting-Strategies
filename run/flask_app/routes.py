@@ -3,11 +3,9 @@ from datetime import date
 from pprint import pprint
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-plt.style.use('seaborn-whitegrid')
 
 from .run import app
-from flask_app import Filter, create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites, test_df
+from flask_app import Filter, create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites, test_df, df
 # from app.game_filter import date_range
 
 
