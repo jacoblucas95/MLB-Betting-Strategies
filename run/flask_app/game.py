@@ -12,7 +12,7 @@ test_df = df[(df['date'] > '2018-5-1 01:00:00') & (df['date'] <= '2018-5-2 04:00
 
 class Game:
     def __init__(self, visitor_row, home_row):
-        self.date = datetime.timestamp(visitor_row.date)
+        self.date = visitor_row.date
         self.gameno = visitor_row.gameno
         self.total_runs_game = visitor_row.total_runs_game
         
@@ -262,6 +262,7 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df=df):
             bet_outcome = game.run_line_bet(strategy_func)
         else:
             return None
+        
         count += bet_amt * bet_outcome
         data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'Gameno':int(gameno)})
     return data
