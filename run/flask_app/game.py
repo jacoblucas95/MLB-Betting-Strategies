@@ -8,11 +8,13 @@ from .strategies import home_team, visitor_team, favorites, underdogs, overs, un
 
 pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
 df = pd.read_pickle(pickle_path)
-test_df = df[(df['date'] > '2018-1-1 01:00:00') & (df['date'] <= '2019-5-1 04:00:00')]
+df1 = df
+df1['date'] = pd.to_datetime(df1['date'], infer_datetime_format=True)
+test_df = df1[(df1['date'] > '2018-01-01') & (df1['date'] <= '2019-5-1')]
 
 class Game:
     def __init__(self, visitor_row, home_row):
-        self.date = visitor_row.date.date()
+        self.date = visitor_row.date
         self.gameno = visitor_row.gameno
         self.total_runs_game = visitor_row.total_runs_game
         
@@ -41,6 +43,7 @@ class Game:
         self.home_run_line_close = home_row.run_line_close
         self.home_run_line_odds_close = home_row.run_line_odds_close
 
+        #TODO Need to double check that this is the correct calculation: is the visitor row the odds for betting the over?  if so, it should be the more negative set of odds is the favorite, the below is reversed.
         if visitor_row.over_under_odds_close > home_row.over_under_odds_close:
             self.over_is_favorite = True
         else:
@@ -262,8 +265,8 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df=df):
             bet_outcome = game.run_line_bet(strategy_func)
         else:
             return None
-        count += bet_amt * bet_outcome
-        data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio Value': float(count), 'Gameno':int(gameno)})
+        count += (bet_amt * bet_outcome)
+        data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'Gameno': int(gameno)})
     return data
     
 if __name__ == "__main__":

@@ -3,11 +3,9 @@ from datetime import date
 from pprint import pprint
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-plt.style.use('seaborn-whitegrid')
 
 from .run import app
-from flask_app import Filter, create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites, test_df
+from flask_app import Filter, create_betting_results, home_team, visitor_team, overs, underdogs, unders, favorites, df, test_df
 # from app.game_filter import date_range
 
 
@@ -52,7 +50,8 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify(create_betting_results('ml', favorites, 100, df=test_df))
+		pprint(create_betting_results('ou', underdogs, 100, df=test_df))
+		return jsonify(create_betting_results('ou', underdogs, 100, df=test_df))
 
 # @app.route('/test/graph', methods=['GET'])
 # def test_graph():
