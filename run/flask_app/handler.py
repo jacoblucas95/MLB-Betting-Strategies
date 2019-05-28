@@ -17,14 +17,16 @@ def get_game_data(gameno, df=df):
     return game_rows.iloc[0]
 
 def game_sequence(df):
+#    print('\n\n\n\n\nLOG:\n\n\n', df, '\n\n\n\n')
     for index in range(df.shape[0]):
         yield df.iloc[index]
 
+'''
 if __name__ == "__main__":
     games1 = game_sequence(df)
     game2 = get_game_data(10)
     print(game2)
-
+'''
 
 
 

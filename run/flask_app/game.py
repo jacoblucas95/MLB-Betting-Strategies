@@ -5,6 +5,7 @@ import pandas as pd
 
 from .handler import get_game_data, game_sequence
 from .strategies import home, visitor, favorites, underdogs, overs, unders
+from .game_filter import Filter
 
 pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
 df = pd.read_pickle(pickle_path)
@@ -250,7 +251,7 @@ def odds_payout(odds, favorite, win):
         return 'inputs must be true or false'
 
 #TODO Make this function faster
-def create_betting_results(bet_type, strategy_func, bet_amt, df=test_df):
+def create_betting_results(bet_type, strategy_func, bet_amt, df):
     count = 0
     data = []
     for game_row in game_sequence(df):
@@ -266,7 +267,10 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df=test_df):
         else:
             return None
         count += (bet_amt * bet_outcome)
-        data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'Gameno': int(gameno)})
+        data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'gameno': int(gameno)})
+    df2 = pd.DataFrame.from_dict(data)
+    df3 = pd.merge(df, df2, on='gameno', how='right')
+    print(df3)
     return data
 
 def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):
@@ -290,7 +294,9 @@ def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):
     df3 = pd.merge(df, df2, on='gameno', how='right')
     return df3
     
+'''
 if __name__ == "__main__":
     pass
 #    print(create_betting_results('ml', favorites, 100))
 #    csvData.to_csv('test.csv')
+'''
