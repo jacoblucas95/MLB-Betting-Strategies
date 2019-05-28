@@ -26,6 +26,8 @@ class Filter:
             df2 = df2.loc[(df2['visitor_home'] == self.visitor_home) & (df2['money_line_close'] > 0)]
         return df2
 
+    
+
 if __name__ == '__main__':
     f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
     print(f.get_df())

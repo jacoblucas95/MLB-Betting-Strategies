@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from .handler import get_game_data, game_sequence
-from .strategies import home_team, visitor_team, favorites, underdogs, overs, unders
+from .strategies import home, visitor, favorites, underdogs, overs, unders
 
 pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
 df = pd.read_pickle(pickle_path)
@@ -44,7 +44,7 @@ class Game:
         self.h_run_line_close = game_row.h_run_line_close
         self.h_run_line_odds_close = game_row.h_run_line_odds_close
         
-        if game_row.over_odds_close > game_row.under_odds_close:
+        if game_row.over_odds_close < game_row.under_odds_close:
             self.over_is_favorite = True
         else:
             self.over_is_favorite = False
@@ -73,7 +73,7 @@ class Game:
             self.underdog_money_line_close = game_row.v_money_line_close
             self.underdog_money_line_run_dif_game = game_row.v_run_dif_game
         
-        if game_row.v_run_line_odds_close < game_row.h_run_line_odds_close:
+        if game_row.v_run_line_close < game_row.h_run_line_close:
             self.visitor_team_is_run_line_favorite = True
             self.favorite_run_line_team = game_row.v_team
             self.favorite_run_line_odds_close = game_row.v_run_line_odds_close
@@ -268,6 +268,27 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df=test_df):
         count += (bet_amt * bet_outcome)
         data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'Gameno': int(gameno)})
     return data
+
+def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):
+    count = 0
+    data = []
+    for game_row in game_sequence(df):
+        game = Game(game_row)
+        date_ = game.date
+        gameno = game.gameno
+        if bet_type == 'ml':
+            bet_outcome = game.money_line_bet(strategy_func)
+        elif bet_type == 'ou':
+            bet_outcome = game.over_under_bet(strategy_func)
+        elif bet_type == 'rl':
+            bet_outcome = game.run_line_bet(strategy_func)
+        else:
+            return None
+        count += (bet_amt * bet_outcome)
+        data.append({'date': str(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
+    df2 = pd.DataFrame.from_dict(data)
+    df3 = pd.merge(df, df2, on='gameno', how='right')
+    return df3
     
 if __name__ == "__main__":
     pass

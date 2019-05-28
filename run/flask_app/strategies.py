@@ -1,10 +1,58 @@
 # Team Bets
 
-def home_team(game):
+def home(game):
     return 'h'
 
-def visitor_team(game):
+def visitor(game):
     return 'v'
+
+def home_underdogs_ml(game):
+    if game.visitor_team_is_money_line_favorite:
+        return 'h'
+    else:
+        return None
+
+def visitor_underdogs_ml(game):
+    if game.visitor_team_is_money_line_favorite:
+        return None
+    else:
+        return 'v'
+
+def home_favorites_ml(game):
+    if game.visitor_team_is_money_line_favorite:
+        return None
+    else:
+        return 'h'
+
+def visitor_favorites_ml(game):
+    if game.visitor_team_is_money_line_favorite:
+        return 'v'
+    else:
+        return None
+
+def home_underdogs_rl(game):
+    if game.visitor_team_is_run_line_favorite:
+        return 'h'
+    else:
+        return None
+
+def visitor_underdogs_rl(game):
+    if game.visitor_team_is_run_line_favorite:
+        return None
+    else:
+        return 'v'
+
+def home_favorites_rl(game):
+    if game.visitor_team_is_run_line_favorite:
+        return None
+    else:
+        return 'h'
+
+def visitor_favorites_rl(game):
+    if game.visitor_team_is_run_line_favorite:
+        return 'v'
+    else:
+        return None
 
 # Game Bets
 
@@ -19,5 +67,12 @@ def favorites(game):
 
 def underdogs(game):
     return 'dog'
+
+
+
+
+
+
+
 
 
