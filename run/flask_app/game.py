@@ -5,6 +5,7 @@ import pandas as pd
 
 from .handler import get_game_data, game_sequence
 from .strategies import home_team, visitor_team, favorites, underdogs, overs, unders
+from .game_filter import Filter
 
 pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
 df = pd.read_pickle(pickle_path)
@@ -250,7 +251,7 @@ def odds_payout(odds, favorite, win):
         return 'inputs must be true or false'
 
 #TODO Make this function faster
-def create_betting_results(bet_type, strategy_func, bet_amt, df=test_df):
+def create_betting_results(bet_type, strategy_func, bet_amt, df):
     count = 0
     data = []
     for game_row in game_sequence(df):

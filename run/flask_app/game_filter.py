@@ -10,19 +10,15 @@ df = pd.read_pickle(pickle_path)
 
 class Filter:
     
-    def __init__(self):
+    def __init__(self, start_date, end_date):
         self.start_date = start_date
         self.end_date = end_date
 
-    def get_df(self):
-        self.df['date'] = pd.to_datetime(self.df['date'])
-        df2 = self.df[self.df['date'].isin(pd.date_range(self.start_date, self.end_date))]
-        if self.favorite_underdog == 'fav':
-            df2 = df2.loc[(df2['visitor_home'] == self.visitor_home) & (df2['money_line_close'] < 0)]
-        else:
-            df2 = df2.loc[(df2['visitor_home'] == self.visitor_home) & (df2['money_line_close'] > 0)]
-        return df2
+    def date_range_df(self):
+        df['date'] = pd.to_datetime(df['date'])
+        df_new = df[df['date'].isin(pd.date_range(self.start_date, self.end_date))]
+        return df_new
 
 if __name__ == '__main__':
-    f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
-    print(f.get_df())
+    f = Filter(date(2018, 1, 1), date.today())
+    print(f.date_range_df())

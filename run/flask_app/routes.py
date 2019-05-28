@@ -52,7 +52,14 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify(create_betting_results('ou', favorites, 100, df=test_df))
+		df = Filter(date(2018,1,1),date.today()).date_range_df()
+		return jsonify(create_betting_results('ou', favorites, 100, df))
+	elif request.method == 'POST':
+		start_date = request.json['start_date']
+		end_date = request.json['end_date']
+		df = Filter(date(start_date), date(end_date))
+		return jsonify(create_betting_results('ou', favorites, 100, df))
+
 
 # @app.route('/test/graph', methods=['GET'])
 # def test_graph():
