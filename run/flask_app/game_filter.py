@@ -19,6 +19,8 @@ class Filter:
         df_new = df[df['date'].isin(pd.date_range(self.start_date, self.end_date))]
         return df_new
 
+'''
 if __name__ == '__main__':
     f = Filter(date(2018, 1, 1), date.today())
     print(f.date_range_df())
+'''

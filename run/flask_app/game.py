@@ -270,7 +270,9 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
         data.append({'Date': date_, 'Bet_Outcomes': float(bet_outcome), 'Portfolio Value': float(count), 'Gameno':int(gameno)})
     return data
     
+'''
 if __name__ == "__main__":
     pass
 #    print(create_betting_results('ml', favorites, 100))
 #    csvData.to_csv('test.csv')
+'''
