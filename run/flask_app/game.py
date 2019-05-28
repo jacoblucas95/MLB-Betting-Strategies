@@ -44,7 +44,7 @@ class Game:
         self.h_run_line_close = game_row.h_run_line_close
         self.h_run_line_odds_close = game_row.h_run_line_odds_close
         
-        if game_row.over_odds_close > game_row.under_odds_close:
+        if game_row.over_odds_close < game_row.under_odds_close:
             self.over_is_favorite = True
         else:
             self.over_is_favorite = False

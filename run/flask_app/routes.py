@@ -9,36 +9,6 @@ from flask_app import Filter, create_betting_results, home_team, visitor_team, o
 # from app.game_filter import date_range
 
 
-@app.route('/')
-def root():
-	return jsonify({
-		"game_1":{
-			"home_team":"Home Team1",
-			"away_team":"Away Team1",
-			"location":"City1",
-			"date":"1499817600",
-			"final_score":"69",
-			"odds":"6:9",
-			"open_close_ratio":"9:6",
-			"pitcher":{
-				"name":"Mikey Mike",
-				"hand":"R"
-				}
-		},
-		"game_2":{
-			"home_team":"Home Team2",
-			"away_team":"Away Team2",
-			"location":"City2",
-			"date":"1531353600",
-			"final_score":"420",
-			"odds":"4:20",
-			"open_close_ratio":"4:20",
-			"pitcher":{
-				"name":"Bobby Bob",
-				"hand":"L"
-				}
-		}
-	})
 
 @app.route('/test',  methods=['GET'])
 def test():
@@ -50,12 +20,7 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-<<<<<<< HEAD
 		return jsonify(create_betting_results('ou', favorites, 100, df=test_df))
-=======
-		pprint(create_betting_results('ou', underdogs, 100, df=test_df))
-		return jsonify(create_betting_results('ou', underdogs, 100, df=test_df))
->>>>>>> d121c76f95d8c76ba8459eef70820cb82fac31d3
 
 # @app.route('/test/graph', methods=['GET'])
 # def test_graph():
