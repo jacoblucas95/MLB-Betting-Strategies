@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
 import os
 import pandas as pd
 import numpy as np
     
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
 df = pd.read_pickle(pickle_path)
 
 def fix_df_types(df):
@@ -13,18 +14,17 @@ def fix_df_types(df):
 def get_game_data(gameno, df=df):
     game_test = df['gameno'] == gameno
     game_rows = df[game_test]
-    if len(game_rows) == 2:
-        return game_rows.iloc[0], game_rows.iloc[1]
-    return None
+    return game_rows.iloc[0]
 
-def game_sequence(df=df):
-    for index in range(0, df.shape[0], 2):
-        yield df.iloc[index], df.iloc[index+1]
+def game_sequence(df):
+    for index in range(df.shape[0]):
+        yield df.iloc[index]
 
 if __name__ == "__main__":
-    games1 = game_sequence() 
-    print(games1)
+    games1 = game_sequence(df)
+    game2 = get_game_data(10)
+    print(game2)
 
-            
+
 
 

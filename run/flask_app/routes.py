@@ -52,7 +52,7 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify(create_betting_results('ml', favorites, 100, df=test_df))
+		return jsonify(create_betting_results('ou', favorites, 100, df=test_df))
 
 # @app.route('/test/graph', methods=['GET'])
 # def test_graph():

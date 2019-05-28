@@ -5,9 +5,8 @@ from datetime import date
 
 # from .handler import fix_df_types
 
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
 df = pd.read_pickle(pickle_path)
-test_df = df[(df['date'] > '2018-1-1 01:00:00') & (df['date'] <= '2019-5-1 04:00:00')]
 
 class Filter:
     

@@ -6,87 +6,90 @@ import pandas as pd
 from .handler import get_game_data, game_sequence
 from .strategies import home_team, visitor_team, favorites, underdogs, overs, unders
 
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'baseball.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
 df = pd.read_pickle(pickle_path)
-test_df = df[(df['date'] > '2018-1-1 01:00:00') & (df['date'] <= '2019-5-1 04:00:00')]
+df1 = df
+df1['date'] = pd.to_datetime(df1['date'], infer_datetime_format=True)
+test_df = df1[(df1['date'] > '2018-01-01') & (df1['date'] <= '2019-5-1')]
+
 
 class Game:
-    def __init__(self, visitor_row, home_row):
-        self.date = visitor_row.date.date()
-        self.gameno = visitor_row.gameno
-        self.total_runs_game = visitor_row.total_runs_game
+    def __init__(self, game_row):
+        self.date = game_row.date.date()
+        self.gameno = game_row.gameno
+        self.total_runs_game = game_row.total_runs_game
         
-        self.over_under_line_open = visitor_row.over_under_line_open
-        self.over_under_line_close = visitor_row.over_under_line_close
-        self.over_odds_open = visitor_row.over_under_odds_open
-        self.over_odds_close = visitor_row.over_under_odds_close
-        self.under_odds_open = home_row.over_under_odds_open
-        self.under_odds_close = home_row.over_under_odds_close
+        self.over_line_open = game_row.over_line_open
+        self.over_line_close = game_row.over_line_close
+        self.over_odds_open = game_row.over_odds_open
+        self.over_odds_close = game_row.over_odds_close
+        self.under_odds_open = game_row.under_odds_open
+        self.under_odds_close = game_row.under_odds_close
         
-        self.visitor_team = visitor_row.team
-        self.visitor_run_total = visitor_row.team_run_total
-        self.visitor_money_line_open = visitor_row.money_line_open
-        self.visitor_money_line_close = visitor_row.money_line_close
-        self.visitor_pitcher = visitor_row.pitcher
-        self.visitor_run_dif = visitor_row.run_dif_game
-        self.visitor_run_line_close = visitor_row.run_line_close
-        self.visitor_run_line_odds_close = visitor_row.run_line_odds_close
-        
-        self.home_team = home_row.team
-        self.home_run_total = home_row.team_run_total
-        self.home_money_line_open = home_row.money_line_open
-        self.home_money_line_close = home_row.money_line_close
-        self.home_pitcher = home_row.pitcher
-        self.home_run_dif = home_row.run_dif_game
-        self.home_run_line_close = home_row.run_line_close
-        self.home_run_line_odds_close = home_row.run_line_odds_close
+        self.v_team = game_row.v_team
+        self.v_team_run_total = game_row.v_team_run_total
+        self.v_money_line_open = game_row.v_money_line_open
+        self.v_money_line_close = game_row.v_money_line_close
+        self.v_pitcher = game_row.v_pitcher
+        self.v_run_dif_game = game_row.v_run_dif_game
+        self.v_run_line_close = game_row.v_run_line_close
+        self.v_run_line_odds_close = game_row.v_run_line_odds_close
 
-        if visitor_row.over_under_odds_close > home_row.over_under_odds_close:
+        self.h_team = game_row.h_team
+        self.h_team_run_total = game_row.h_team_run_total
+        self.h_money_line_open = game_row.h_money_line_open
+        self.h_money_line_close = game_row.h_money_line_close
+        self.h_pitcher = game_row.h_pitcher
+        self.h_run_dif_game = game_row.h_run_dif_game
+        self.h_run_line_close = game_row.h_run_line_close
+        self.h_run_line_odds_close = game_row.h_run_line_odds_close
+        
+        if game_row.over_odds_close > game_row.under_odds_close:
             self.over_is_favorite = True
         else:
             self.over_is_favorite = False
 
-        if visitor_row.money_line_close < home_row.money_line_close:
+        if game_row.v_money_line_close < game_row.h_money_line_close:
             self.visitor_team_is_money_line_favorite = True
-            self.favorite_money_line_team = visitor_row.team
-            self.favorite_money_line_open = visitor_row.money_line_open
-            self.favorite_money_line_close = visitor_row.money_line_close
-            self.favorite_money_line_run_dif_game = visitor_row.run_dif_game
+            self.favorite_money_line_team = game_row.v_team
+            self.favorite_money_line_open = game_row.v_money_line_open
+            self.favorite_money_line_close = game_row.v_money_line_close
+            self.favorite_money_line_run_dif_game = game_row.v_run_dif_game
 
-            self.underdog_money_line_team = home_row.team
-            self.underdog_money_line_open = home_row.money_line_open
-            self.underdog_money_line_close = home_row.money_line_close
-            self.underdog_money_line_run_dif_game = home_row.run_dif_game
+            self.underdog_money_line_team = game_row.h_team
+            self.underdog_money_line_open = game_row.h_money_line_open
+            self.underdog_money_line_close = game_row.h_money_line_close
+            self.underdog_money_line_run_dif_game = game_row.h_run_dif_game
             
         else:
             self.visitor_team_is_money_line_favorite = False
-            self.favorite_money_line_team = home_row.team
-            self.favorite_money_line_open = home_row.money_line_open
-            self.favorite_money_line_close = home_row.money_line_close
-            self.favorite_money_line_run_dif_game = home_row.run_dif_game 
+            self.favorite_money_line_team = game_row.h_team
+            self.favorite_money_line_open = game_row.h_money_line_open
+            self.favorite_money_line_close = game_row.h_money_line_close
+            self.favorite_money_line_run_dif_game = game_row.h_run_dif_game 
 
-            self.underdog_money_line_team = visitor_row.team
-            self.underdog_money_line_open = visitor_row.money_line_open
-            self.underdog_money_line_close = visitor_row.money_line_close
-            self.underdog_money_line_run_dif_game = visitor_row.run_dif_game
+            self.underdog_money_line_team = game_row.v_team
+            self.underdog_money_line_open = game_row.v_money_line_open
+            self.underdog_money_line_close = game_row.v_money_line_close
+            self.underdog_money_line_run_dif_game = game_row.v_run_dif_game
         
-        if visitor_row.run_line_odds_close < home_row.run_line_odds_close:
+        if game_row.v_run_line_odds_close < game_row.h_run_line_odds_close:
             self.visitor_team_is_run_line_favorite = True
-            self.favorite_run_line_team = visitor_row.team
-            self.favorite_run_line_odds_close = visitor_row.run_line_odds_close
-            self.underdog_run_line_odds_close = home_row.run_line_odds_close
-            self.underdog_run_line_team = home_row.team
-            self.favorite_run_line_run_dif_game = visitor_row.run_dif_game
-            self.underdog_run_line_run_dif_game = home_row.run_dif_game
+            self.favorite_run_line_team = game_row.v_team
+            self.favorite_run_line_odds_close = game_row.v_run_line_odds_close
+            self.underdog_run_line_odds_close = game_row.h_run_line_odds_close
+            self.underdog_run_line_team = game_row.h_team
+            self.favorite_run_line_run_dif_game = game_row.v_run_dif_game
+            self.underdog_run_line_run_dif_game = game_row.h_run_dif_game
 
         else:
             self.visitor_team_is_run_line_favorite = False
-            self.favorite_run_line_team = home_row.team
-            self.favorite_run_line_odds_close = home_row.run_line_odds_close
-            self.underdog_run_line_odds_close = visitor_row.run_line_odds_close
-            self.underdog_run_line_team = visitor_row.team
-            self.underdog_run_line_run_dif_game = visitor_row.run_dif_game
-            self.favorite_run_line_run_dif_game = home_row.run_dif_game
+            self.favorite_run_line_team = game_row.h_team
+            self.favorite_run_line_odds_close = game_row.h_run_line_odds_close
+            self.underdog_run_line_odds_close = game_row.v_run_line_odds_close
+            self.underdog_run_line_team = game_row.v_team
+            self.underdog_run_line_run_dif_game = game_row.v_run_dif_game
+            self.favorite_run_line_run_dif_game = game_row.h_run_dif_game
 
     def run_line_bet(self, strategy_func):
         choice = strategy_func(self)
@@ -162,27 +165,27 @@ class Game:
         if choice == 'fav' or choice == 'dog':
             choice = convert_choice(choice)
         # returns a tuple (odds, bet_on_favorite=True/False, win_or_lose=True/False)
-        if self.total_runs_game == self.over_under_line_close:
+        if self.total_runs_game == self.over_line_close:
             return None
         if choice == 'o':
             if self.over_is_favorite:
-                if self.total_runs_game > self.over_under_line_close:
+                if self.total_runs_game > self.over_line_close:
                     return self.over_odds_close, True, True
                 else:
                     return self.over_odds_close, True, False
             else:
-                if self.total_runs_game > self.over_under_line_close:
+                if self.total_runs_game > self.over_line_close:
                     return self.over_odds_close, False, True
                 else:
                     return self.over_odds_close, False, False
         elif choice == 'u':
             if self.over_is_favorite:
-                if self.total_runs_game > self.over_under_line_close:
+                if self.total_runs_game > self.over_line_close:
                     return self.under_odds_close, False, False
                 else:
                     return self.under_odds_close, False, True
             else:    
-                if self.total_runs_game > self.over_under_line_close:
+                if self.total_runs_game > self.over_line_close:
                     return self.under_odds_close, True, False
                 else:
                     return self.under_odds_close, True, True
@@ -247,11 +250,11 @@ def odds_payout(odds, favorite, win):
         return 'inputs must be true or false'
 
 #TODO Make this function faster
-def create_betting_results(bet_type, strategy_func, bet_amt, df=df):
+def create_betting_results(bet_type, strategy_func, bet_amt, df=test_df):
     count = 0
     data = []
-    for visitor_row, home_row in game_sequence(df):
-        game = Game(visitor_row, home_row)
+    for game_row in game_sequence(df):
+        game = Game(game_row)
         date_ = game.date
         gameno = game.gameno
         if bet_type == 'ml':
@@ -268,6 +271,5 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df=df):
     
 if __name__ == "__main__":
     pass
-    # f = Filter(date(2018, 1, 1), date.today(), 'H', 'fav')
-    # print(create_betting_results('ml', favorites))
-    # csvData.to_csv('test.csv')
+#    print(create_betting_results('ml', favorites, 100))
+#    csvData.to_csv('test.csv')
