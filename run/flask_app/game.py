@@ -267,7 +267,10 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
         else:
             return None
         count += (bet_amt * bet_outcome)
-        data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'Gameno': int(gameno)})
+        data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'gameno': int(gameno)})
+    df2 = pd.DataFrame.from_dict(data)
+    df3 = pd.merge(df, df2, on='gameno', how='right')
+    print(df3)
     return data
     
 '''

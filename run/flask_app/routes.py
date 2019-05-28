@@ -55,4 +55,4 @@ def get_dataset():
 # 		graph = ax.plot(kind='line', x=x, y=y, color='red')
 # 		graph.savefig('/Baseball/plot.png')
 # 		return render_template('plot_test.html')
-		
+
