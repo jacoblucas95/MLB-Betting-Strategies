@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import numpy as np
     
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'unix_dataset.pickle')
 df = pd.read_pickle(pickle_path)
 
 def fix_df_types(df):
