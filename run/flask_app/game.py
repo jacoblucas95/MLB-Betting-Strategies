@@ -49,6 +49,16 @@ class Game:
             self.over_is_favorite = True
         else:
             self.over_is_favorite = False
+        
+        if self.v_money_line_close < self.v_money_line_open:
+            self.visitor_team_is_money_line_public_favorite = True
+        else:
+            self.visitor_team_is_money_line_public_favorite = False
+        
+        if self.h_money_line_close < self.h_money_line_open:
+            self.home_team_is_money_line_public_favorite = True
+        else:
+            self.home_team_is_money_line_public_favorite = False
 
         if game_row.v_money_line_close < game_row.h_money_line_close:
             self.visitor_team_is_money_line_favorite = True
