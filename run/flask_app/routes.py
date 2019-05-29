@@ -27,7 +27,6 @@ def get_dataset():
 	elif request.method == 'POST':
 		sd = float(request.json['start_date'])
 		ed = float(request.json['end_date'])
-		print(type(sd),type(sd))
 
 
 		df = Filter(sd, ed).date_range_df()
