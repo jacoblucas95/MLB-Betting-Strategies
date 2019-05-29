@@ -19,26 +19,14 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		df = Filter(date(2018,1,1),date.today()).date_range_df()
-		return jsonify(create_betting_results_test('ou', longshot_ou, 100, df))
-			
+		df = Filter(1270354000,1554610000).date_range_df()
+		return jsonify(create_betting_results('ou', favorites, 100, df))
 	elif request.method == 'POST':
-		sd = request.json['start_date']
-		ed = request.json['end_date']
-		start_date = datetime.fromtimestamp(sd)
-		end_date = datetime.fromtimestamp(ed)
+		sd = float(request.json['start_date'])
+		ed = float(request.json['end_date'])
 
-		s = start_date.strftime('%Y-%m-%d')
-		sy = int(s[0:4])
-		sm = int(s[5:7])
-		sd = int(s[8:10])
 
-		e = end_date.strftime('%Y-%m-%d')
-		ey = int(e[0:4])
-		em = int(e[5:7])
-		ed = int(e[8:10])
-
-		df = Filter(date(sy,sm,sd), date(ey,em,ed)).date_range_df()
+		df = Filter(sd, ed).date_range_df()
 		return jsonify(create_betting_results('ou', favorites, 100, df))
 
 
