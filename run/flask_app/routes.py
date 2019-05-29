@@ -22,7 +22,7 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		df = Filter(1270354000,1554610000).date_range_df()
+		df = Filter(1554523000,1554610000).date_range_df()
 		return jsonify(create_betting_results('ou', favorites, 100, df))
 	elif request.method == 'POST':
 		sd = float(request.json['start_date'])
