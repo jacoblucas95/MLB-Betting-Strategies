@@ -5,7 +5,7 @@ from datetime import date
 
 # from .handler import fix_df_types
 
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'unix_dataset.pickle')
 df = pd.read_pickle(pickle_path)
 
 class Filter:
@@ -15,8 +15,8 @@ class Filter:
         self.end_date = end_date
 
     def date_range_df(self):
-        df['date'] = pd.to_datetime(df['date'])
-        df_new = df[df['date'].isin(pd.date_range(self.start_date, self.end_date))]
+        day_early = 24*60*60
+        df_new = df[df['date'].between(self.start_date, self.end_date, inclusive=True)]
         return df_new
 
 '''

@@ -7,7 +7,7 @@ from .handler import get_game_data, game_sequence
 from .strategies import home_team, visitor_team, favorites, underdogs, overs, unders
 from .game_filter import Filter
 
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'unix_dataset.pickle')
 df = pd.read_pickle(pickle_path)
 df1 = df
 df1['date'] = pd.to_datetime(df1['date'], infer_datetime_format=True)
@@ -16,7 +16,7 @@ test_df = df1[(df1['date'] > '2018-01-01') & (df1['date'] <= '2019-5-1')]
 
 class Game:
     def __init__(self, game_row):
-        self.date = game_row.date.date()
+        self.date = game_row.date
         self.gameno = game_row.gameno
         self.total_runs_game = game_row.total_runs_game
         
