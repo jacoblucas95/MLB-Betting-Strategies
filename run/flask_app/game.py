@@ -7,12 +7,6 @@ from .handler import get_game_data, game_sequence
 from .strategies import home, visitor, favorites, underdogs, overs, unders
 from .game_filter import Filter
 
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'unix_dataset.pickle')
-df = pd.read_pickle(pickle_path)
-df1 = df
-df1['date'] = pd.to_datetime(df1['date'], infer_datetime_format=True)
-test_df = df1[(df1['date'] > '2018-01-01') & (df1['date'] <= '2019-5-1')]
-
 
 class Game:
     def __init__(self, game_row):
@@ -273,7 +267,7 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
     print(df3)
     return data
 
-def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):
+def create_betting_results_test(bet_type, strategy_func, bet_amt, df):
     count = 0
     data = []
     for game_row in game_sequence(df):
@@ -289,10 +283,8 @@ def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):
         else:
             return None
         count += (bet_amt * bet_outcome)
-        data.append({'date': str(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
-    df2 = pd.DataFrame.from_dict(data)
-    df3 = pd.merge(df, df2, on='gameno', how='right')
-    return df3
+        data.append({'date': int(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
+    return data
     
 '''
 if __name__ == "__main__":

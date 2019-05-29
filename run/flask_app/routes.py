@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 from .run import app
-from flask_app import Filter, create_betting_results, create_betting_results_test, home, visitor, overs, underdogs, unders, favorites, df, test_df, home_underdogs_ml
-# from app.game_filter import date_range
+from flask_app import Filter, create_betting_results, create_betting_results_test, home, visitor, overs, underdogs, unders, favorites, home_underdogs_ml
+from .game_filter import Filter
 
 
 @app.route('/test',  methods=['GET'])
@@ -19,13 +19,12 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		df = Filter(1554523000,1554610000).date_range_df()
+		df = Filter(1554523200,1554609600).date_range_df()
 		return jsonify(create_betting_results('ou', favorites, 100, df))
+
 	elif request.method == 'POST':
-		sd = float(request.json['start_date'])
-		ed = float(request.json['end_date'])
-
-
+		sd = int(request.json['start_date'])
+		ed = int(request.json['end_date'])
 		df = Filter(sd, ed).date_range_df()
 		return jsonify(create_betting_results('ou', favorites, 100, df))
 
