@@ -19,14 +19,16 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		df = Filter(1554523200,1554609600).date_range_df()
-		return jsonify(create_betting_results('ou', favorites, 100, df))
+		sd = 1554523200
+		ed = 1554609600
+		df = Filter(sd, ed).date_range_df()
+		return jsonify(create_betting_results('ou', overs, 100, df))
 
 	elif request.method == 'POST':
 		sd = int(request.json['start_date'])
 		ed = int(request.json['end_date'])
 		df = Filter(sd, ed).date_range_df()
-		return jsonify(create_betting_results('ou', favorites, 100, df))
+		return jsonify(create_betting_results('ou', underdogs, 100, df))
 
 
 # @app.route('/test/graph', methods=['GET'])

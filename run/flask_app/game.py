@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from .handler import get_game_data, game_sequence
-from .strategies import home, visitor, favorites, underdogs, overs, unders
+from .strategies import home, visitor, favorites, underdogs, overs, unders, home_underdogs_ml
 from .game_filter import Filter
 
 
@@ -261,10 +261,12 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
         else:
             return None
         count += (bet_amt * bet_outcome)
-        data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'gameno': int(gameno)})
+        data.append({'date': int(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
     df2 = pd.DataFrame.from_dict(data)
+    df2.drop(['date'], axis=1, inplace=True)
     df3 = pd.merge(df, df2, on='gameno', how='right')
-    print(df3)
+    pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'analysis_dataset.pickle')
+    df3.to_pickle(pickle_path)
     return data
 
 def create_betting_results_test(bet_type, strategy_func, bet_amt, df):

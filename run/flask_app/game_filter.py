@@ -18,9 +18,9 @@ class Filter:
         day_early = 24*60*60
         sd = self.start_date - day_early
         ed = self.end_date
-        print(sd,ed)
         df_new = df[df['date'].between(sd, ed, inclusive=True)]
-        print(df)
+
+        return df
         return df_new
 
 '''
