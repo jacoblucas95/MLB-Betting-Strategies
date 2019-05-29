@@ -1,10 +1,10 @@
 import os, csv, sqlite3, json
-from datetime import date
+from datetime import datetime
 import numpy as np
 import pandas as pd
 
 from .handler import get_game_data, game_sequence
-from .strategies import home, visitor, favorites, underdogs, overs, unders
+from .strategies import home, visitor, overs, underdogs, unders, favorites, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, visitor_underdogs_rl, home_favorites_ml, home_favorites_rl
 from .game_filter import Filter
 
 pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'dataset.pickle')
@@ -292,7 +292,7 @@ def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):
         data.append({'date': str(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
     df2 = pd.DataFrame.from_dict(data)
     df3 = pd.merge(df, df2, on='gameno', how='right')
-    return df3
+    return data
     
 '''
 if __name__ == "__main__":

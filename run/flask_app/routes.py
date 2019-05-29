@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from .run import app
-from flask_app import Filter, create_betting_results, create_betting_results_test, home, visitor, overs, underdogs, unders, favorites, df, test_df, home_underdogs_ml
+from flask_app import Filter, create_betting_results, create_betting_results_test, home, visitor, overs, underdogs, unders, favorites, df, test_df, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, visitor_underdogs_rl, home_favorites_ml, home_favorites_rl, longshot_ml, longshot_ou, longshot_rl
 # from app.game_filter import date_range
 
 
@@ -19,9 +19,9 @@ def test():
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		return jsonify(create_betting_results_test('ml', home_underdogs_ml, 100, df=test_df))
 		df = Filter(date(2018,1,1),date.today()).date_range_df()
-		return jsonify(create_betting_results('ou', favorites, 100, df))
+		return jsonify(create_betting_results_test('ou', longshot_ou, 100, df))
+			
 	elif request.method == 'POST':
 		sd = request.json['start_date']
 		ed = request.json['end_date']
@@ -42,16 +42,5 @@ def get_dataset():
 		return jsonify(create_betting_results('ou', favorites, 100, df))
 
 
-# @app.route('/test/graph', methods=['GET'])
-# def test_graph():
-# 	if request.method == 'GET':
-# 		data = create_betting_results('ml', favorites, 100, df=test_df)
-# 		data = pd.DataFrame(data)
-# 		fig = plt.figure()
-# 		ax = plt.axes()
-# 		x = data['date']
-# 		y = data['count']
-# 		graph = ax.plot(kind='line', x=x, y=y, color='red')
-# 		graph.savefig('/Baseball/plot.png')
-# 		return render_template('plot_test.html')
+
 
