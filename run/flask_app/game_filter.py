@@ -15,11 +15,9 @@ class Filter:
         self.end_date = end_date
 
     def date_range_df(self):
-        day_early = 24*60*60
-        sd = self.start_date - day_early
+        sd = self.start_date
         ed = self.end_date
         df_new = df[df['date'].between(sd, ed, inclusive=True)]
-
         return df_new
 
 '''

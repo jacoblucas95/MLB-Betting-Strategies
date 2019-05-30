@@ -295,13 +295,9 @@ def create_betting_results_test(bet_type, strategy_func, bet_amt, df):
         else:
             return None
         count += (bet_amt * bet_outcome)
-<<<<<<< HEAD
         data.append({'date': str(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
     df2 = pd.DataFrame.from_dict(data)
     df3 = pd.merge(df, df2, on='gameno', how='right')
-=======
-        data.append({'date': int(date_), 'bet_outcomes': float(bet_outcome), 'portfolio_value': float(count), 'gameno': int(gameno)})
->>>>>>> new_pickle
     return data
     
 '''
