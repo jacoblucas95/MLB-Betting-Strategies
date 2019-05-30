@@ -54,6 +54,18 @@ def visitor_favorites_rl(game):
     else:
         return None
 
+def longshot_teams_ml(game):
+    if game.underdog_money_line_close >= 200:
+        return 'dog'
+    else:
+        return None
+
+def longshot_teams_rl(game):
+    if game.underdog_run_line_odds_close >= 200:
+        return 'dog'
+    else:
+        return None
+
 # Game Bets
 
 def overs(game):

@@ -6,7 +6,7 @@ import pandas as pd
 from handler import get_game_data, game_sequence
 from strategies import home, visitor, overs, underdogs, unders, favorites, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, visitor_underdogs_rl, home_favorites_ml, home_favorites_rl
 
-pickle_path = os.path.join(os.path.dirname(__file__), 'dataset.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), 'unix_dataset.pickle')
 df = pd.read_pickle(pickle_path)
 df1 = df
 df1['date'] = pd.to_datetime(df1['date'], infer_datetime_format=True)
@@ -214,40 +214,40 @@ class Game:
 
     def money_line_winner(self, choice):
             # returns a tuple (odds, bet_on_favorite=True/False, win_or_lose=True/False)
-            if choice == 'h':
-                if self.visitor_team_is_money_line_favorite:
-                    if self.underdog_money_line_run_dif_game > 0:
-                        return self.underdog_money_line_close, False, True
-                    else:
-                        return self.underdog_money_line_close, False, False
-                else:
-                    if self.favorite_money_line_run_dif_game > 0:
-                        return self.favorite_money_line_close, True, True
-                    else:
-                        return self.favorite_money_line_close, True, False
-            elif choice == 'v':
-                if self.visitor_team_is_money_line_favorite:
-                    if self.favorite_money_line_run_dif_game > 0:
-                        return self.favorite_money_line_close, True, True
-                    else:
-                        return self.favorite_money_line_close, True, False
-                else:
-                    if self.underdog_money_line_run_dif_game > 0:
-                        return self.underdog_money_line_close, False, True
-                    else:
-                        return self.underdog_money_line_close, False, False
-            elif choice == 'fav':
-                if self.favorite_money_line_run_dif_game > 0:
-                    return self.favorite_money_line_close, True, True
-                else:
-                    return self.favorite_money_line_close, True, False
-            elif choice == 'dog':
+        if choice == 'h':
+            if self.visitor_team_is_money_line_favorite:
                 if self.underdog_money_line_run_dif_game > 0:
                     return self.underdog_money_line_close, False, True
                 else:
                     return self.underdog_money_line_close, False, False
             else:
-                return ValueError
+                if self.favorite_money_line_run_dif_game > 0:
+                    return self.favorite_money_line_close, True, True
+                else:
+                    return self.favorite_money_line_close, True, False
+        elif choice == 'v':
+            if self.visitor_team_is_money_line_favorite:
+                if self.favorite_money_line_run_dif_game > 0:
+                    return self.favorite_money_line_close, True, True
+                else:
+                    return self.favorite_money_line_close, True, False
+            else:
+                if self.underdog_money_line_run_dif_game > 0:
+                    return self.underdog_money_line_close, False, True
+                else:
+                    return self.underdog_money_line_close, False, False
+        elif choice == 'fav':
+            if self.favorite_money_line_run_dif_game > 0:
+                return self.favorite_money_line_close, True, True
+            else:
+                return self.favorite_money_line_close, True, False
+        elif choice == 'dog':
+            if self.underdog_money_line_run_dif_game > 0:
+                return self.underdog_money_line_close, False, True
+            else:
+                return self.underdog_money_line_close, False, False
+        else:
+            return ValueError
 
 def odds_payout(odds, favorite, win):
     if win == False:
@@ -303,9 +303,11 @@ def create_betting_results_for_port(bet_type, strategy_func, bet_amt, df):
     df2 = pd.DataFrame.from_dict(data)
     return df2
     
-'''
+
 if __name__ == "__main__":
-    pass
+    game = Game(get_game_data(0,df=df))
+    print(game.v_run_line_close)
+    print(type(game.v_run_line_close))
+
 #    print(create_betting_results('ml', favorites, 100))
 #    csvData.to_csv('test.csv')
-'''
