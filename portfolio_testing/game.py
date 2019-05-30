@@ -283,7 +283,7 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
     print(df3)
     return data
 
-def create_betting_results_for_port(bet_type, strategy_func, bet_amt, df=test_df):
+def create_betting_results_for_port(bet_type, strategy_func, bet_amt, df):
     count = 0
     data = []
     for game_row in game_sequence(df):

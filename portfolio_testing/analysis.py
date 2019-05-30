@@ -11,19 +11,19 @@ from strategies import home, visitor, overs, underdogs, unders, favorites, home_
 
 port_pickle_path = os.path.join(os.path.dirname(__file__), 'portfolio.pickle')
 
-def create_portfolio_df(df=test_df):
+def create_portfolio_df(df=df):
     strategy_dict = {'ml': [home, visitor, favorites, underdogs, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, home_favorites_ml], 'rl': [home, visitor, favorites, underdogs, home_favorites_rl, visitor_underdogs_rl, home_underdogs_rl, visitor_favorites_rl], 'ou': [overs, unders, favorites, underdogs]}
     df_list = []
     for group, strategy in strategy_dict.items():
         for strat in strategy:
-            results = create_betting_results_for_port(group, strat, 100)
+            results = create_betting_results_for_port(group, strat, 100, df)
             df_list.append(results)
     port_results = reduce(lambda df1, df2: pd.merge(df1, df2, on='gameno', how='right'), df_list)
     pd.to_pickle(port_results, port_pickle_path)
     return port_results
 
 if __name__ == "__main__":
-    print(create_portfolio_df())
+    create_portfolio_df()
     # print(port())
 
 
