@@ -2,16 +2,14 @@
 import os
 import pandas as pd
 import numpy as np
-    
-pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'unix_dataset.pickle')
-df = pd.read_pickle(pickle_path)
+
 
 def fix_df_types(df):
     df.drop(['Unnamed: 0'], axis=1, inplace=True)
     df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
     return df
 
-def get_game_data(gameno, df=df):
+def get_game_data(gameno, df):
     game_test = df['gameno'] == gameno
     game_rows = df[game_test]
     return game_rows.iloc[0]
