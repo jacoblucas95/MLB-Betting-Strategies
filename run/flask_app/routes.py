@@ -14,7 +14,7 @@ def get_dataset():
 		sd = 1554523200
 		ed = 1554609600
 		df = Filter(sd,ed).date_range_df()
-		return jsonify(create_betting_results('ml', 'favorites', 100, df))
+		return jsonify(create_betting_results('ml', favorites, 100, df))
 
 	elif request.method == 'POST':
 		sd = int(request.json['start_date'])
