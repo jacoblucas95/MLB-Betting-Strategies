@@ -4,11 +4,7 @@ import numpy as np
 import pandas as pd
 
 from .handler import get_game_data, game_sequence
-<<<<<<< HEAD
 from .strategies import home, visitor, overs, underdogs, unders, favorites, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, visitor_underdogs_rl, home_favorites_ml, home_favorites_rl
-=======
-from .strategies import home, visitor, favorites, underdogs, overs, unders, home_underdogs_ml
->>>>>>> new_pickle
 from .game_filter import Filter
 
 

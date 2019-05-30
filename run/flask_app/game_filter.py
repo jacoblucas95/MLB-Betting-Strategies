@@ -20,7 +20,6 @@ class Filter:
         ed = self.end_date
         df_new = df[df['date'].between(sd, ed, inclusive=True)]
 
-        return df
         return df_new
 
 '''
