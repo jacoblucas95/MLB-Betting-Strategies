@@ -280,7 +280,8 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
         data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'gameno': int(gameno)})
     df2 = pd.DataFrame.from_dict(data)
     df3 = pd.merge(df, df2, on='gameno', how='right')
-    print(df3)
+    pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'analysis_dataset.pickle')
+    df3.to_pickle(pickle_path)
     return data
 
 def create_betting_results_test(bet_type, strategy_func, bet_amt, df=test_df):

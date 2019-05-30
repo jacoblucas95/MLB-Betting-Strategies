@@ -20,7 +20,7 @@ def test():
 def get_dataset():
 	if request.method == 'GET':
 		df = Filter(1270354000,1554610000).date_range_df()
-		return jsonify(create_betting_results('ou', favorites, 100, df))
+		return jsonify(create_betting_results('ml', favorites, 100, df))
 	elif request.method == 'POST':
 		sd = float(request.json['start_date'])
 		ed = float(request.json['end_date'])
