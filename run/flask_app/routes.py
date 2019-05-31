@@ -29,4 +29,5 @@ def get_dataset():
 				'longshot_teams_ml': longshot_teams_ml, 'longshot_teams_rl': longshot_teams_rl}
 		strat = request.json['strategy']
 		strategy = strategy_dict[strat]
-		return jsonify(create_betting_results(bet_type, strategy, 100, df))
+		bet_amount = request.json['bet_amount']
+		return jsonify(create_betting_results(bet_type, strategy, bet_amount, df))
