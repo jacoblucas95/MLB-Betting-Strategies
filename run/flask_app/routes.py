@@ -13,10 +13,10 @@ from .summary_stats import summary_stats
 @app.route('/api/dataset',  methods=['GET','POST'])
 def get_dataset():
 	if request.method == 'GET':
-		sd = 1270353600
+		sd = 1540000000
 		ed = 1554609600
 		df = Filter(sd,ed).date_range_df()
-		return jsonify(create_betting_results('ml', favorites, 100, df))
+		return jsonify(create_betting_results('rl', favorites, 100, df))
 
 	elif request.method == 'POST':
 		sd = int(request.json['start_date'])
