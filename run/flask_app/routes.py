@@ -20,12 +20,13 @@ def get_dataset():
 		sd = int(request.json['start_date'])
 		ed = int(request.json['end_date'])
 		df = Filter(sd, ed).date_range_df()
-		bet_type = str(request.json('bet_type'))
-		strategy_dict = {'home': home, 'visitor': visitor}
-		strat = str(request.json['strategy'])
+		bet_type = request.json['bet_type']
+		strategy_dict = {'home': home, 'visitor': visitor, 'overs': overs, 
+				'underdogs': underdogs, 'unders': unders, 'favorites': favorites, 
+				'home_underdogs_ml': home_underdogs_ml, 'visitor_favorites_ml': visitor_favorites_ml, 
+				'visitor_underdogs_ml': visitor_underdogs_ml, 'visitor_underdogs_rl': visitor_underdogs_rl, 
+				'home_favorites_ml': home_favorites_ml, 'home_favorites_rl': home_favorites_rl, 
+				'longshot_teams_ml': longshot_teams_ml, 'longshot_teams_rl': longshot_teams_rl}
+		strat = request.json['strategy']
 		strategy = strategy_dict[strat]
 		return jsonify(create_betting_results(bet_type, strategy, 100, df))
-
-
-
-
