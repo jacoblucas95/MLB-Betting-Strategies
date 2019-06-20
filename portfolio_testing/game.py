@@ -17,14 +17,14 @@ class Game:
         self.date = game_row.date
         self.gameno = game_row.gameno
         self.total_runs_game = game_row.total_runs_game
-        
+
         self.over_line_open = game_row.over_line_open
         self.over_line_close = game_row.over_line_close
         self.over_odds_open = game_row.over_odds_open
         self.over_odds_close = game_row.over_odds_close
         self.under_odds_open = game_row.under_odds_open
         self.under_odds_close = game_row.under_odds_close
-        
+
         self.v_team = game_row.v_team
         self.v_team_run_total = game_row.v_team_run_total
         self.v_money_line_open = game_row.v_money_line_open
@@ -42,7 +42,7 @@ class Game:
         self.h_run_dif_game = game_row.h_run_dif_game
         self.h_run_line_close = game_row.h_run_line_close
         self.h_run_line_odds_close = game_row.h_run_line_odds_close
-        
+
         if game_row.over_odds_close < game_row.under_odds_close:
             self.over_is_favorite = True
         else:
@@ -65,13 +65,13 @@ class Game:
             self.favorite_money_line_team = game_row.h_team
             self.favorite_money_line_open = game_row.h_money_line_open
             self.favorite_money_line_close = game_row.h_money_line_close
-            self.favorite_money_line_run_dif_game = game_row.h_run_dif_game 
+            self.favorite_money_line_run_dif_game = game_row.h_run_dif_game
 
             self.underdog_money_line_team = game_row.v_team
             self.underdog_money_line_open = game_row.v_money_line_open
             self.underdog_money_line_close = game_row.v_money_line_close
             self.underdog_money_line_run_dif_game = game_row.v_run_dif_game
-        
+
         if self.visitor_team_is_money_line_favorite:
             if self.v_money_line_close < self.v_money_line_open:
                 self.visitor_team_is_money_line_public_and_vegas_favorite = True
@@ -109,7 +109,7 @@ class Game:
             return 1 * odds_payout(self.run_line_winner(choice)[0], favorite=self.run_line_winner(choice)[1], win=self.run_line_winner(choice)[2])
         else:
             return -1 * odds_payout(self.run_line_winner(choice)[0], favorite=self.run_line_winner(choice)[1], win=self.run_line_winner(choice)[2])
-    
+
     def run_line_winner(self, choice):
         # returns a tuple (odds, bet_on_favorite=True/False, win_or_lose=True/False)
         if choice == 'h':
@@ -194,14 +194,14 @@ class Game:
                     return self.under_odds_close, False, False
                 else:
                     return self.under_odds_close, False, True
-            else:    
+            else:
                 if self.total_runs_game > self.over_line_close:
                     return self.under_odds_close, True, False
                 else:
                     return self.under_odds_close, True, True
         else:
             return ValueError
-    
+
     def money_line_bet(self, strategy_func):
         choice = strategy_func(self)
         if choice is None:
@@ -278,8 +278,7 @@ def create_betting_results(bet_type, strategy_func, bet_amt, df):
         count += (bet_amt * bet_outcome)
         data.append({'Date': str(date_), 'Bet_Outcomes': float(bet_outcome), 'Portfolio_Value': float(count), 'gameno': int(gameno)})
     df2 = pd.DataFrame.from_dict(data)
-    df3 = pd.merge(df, df2, on=['gameno', 'date'], how='right')
-    print(df3)
+    df3 = pd.merge(df, df2, on='gameno', how='right')
     return data
 
 def create_betting_results_for_port(bet_type, strategy_func, bet_amt, df):
@@ -301,7 +300,7 @@ def create_betting_results_for_port(bet_type, strategy_func, bet_amt, df):
         data.append({strategy_func.__name__ + '_bet_outcomes_' + bet_type: float(bet_outcome), strategy_func.__name__ + '_portfolio_value_' + bet_type: float(count), 'gameno': int(gameno)})
     df2 = pd.DataFrame.from_dict(data)
     return df2
-    
+
 
 if __name__ == "__main__":
     game = Game(get_game_data(0,df=df))

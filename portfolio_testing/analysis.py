@@ -9,9 +9,11 @@ import pandas as pd
 from game import Game, create_betting_results, create_betting_results_for_port, df, test_df
 from strategies import home, visitor, overs, underdogs, unders, favorites, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, home_favorites_ml, home_favorites_rl, visitor_underdogs_rl, home_underdogs_rl, visitor_favorites_rl, longshot_teams_rl, longshot_teams_ml
 
-port_pickle_path = os.path.join(os.path.dirname(__file__), 'unix_dataset.pickle')
+port_pickle_path = os.path.join(os.path.dirname(__file__), 'portfolio_test.pickle')
+pickle_path = os.path.join(os.path.dirname(__file__), '..', 'run', 'setup', 'data', 'unix_dataset.pickle')
+df = pd.read_pickle(pickle_path)
 
-def create_portfolio_df(df=df):
+def create_portfolio_df():
     strategy_dict = {'ml': [home, visitor, favorites, underdogs, home_underdogs_ml, visitor_favorites_ml, visitor_underdogs_ml, home_favorites_ml, longshot_teams_ml], 'rl': [home, visitor, favorites, underdogs, home_favorites_rl, visitor_underdogs_rl, home_underdogs_rl, visitor_favorites_rl, longshot_teams_rl], 'ou': [overs, unders, favorites, underdogs]}
     df_list = []
     for group, strategy in strategy_dict.items():
@@ -23,7 +25,7 @@ def create_portfolio_df(df=df):
     return port_results
 
 if __name__ == "__main__":
-    create_portfolio_df(df=test_df)
+    create_portfolio_df()
     # print(port())
 
 
@@ -48,9 +50,3 @@ if __name__ == "__main__":
 #     df2 = pd.DataFrame.from_dict(data)
 #     df3 = pd.merge(df, df2, on='gameno', how='right')
 #     return data
-
-
-
-
-
-

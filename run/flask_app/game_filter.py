@@ -9,7 +9,7 @@ pickle_path = os.path.join(os.path.dirname(__file__), '..', 'setup', 'data', 'un
 df = pd.read_pickle(pickle_path)
 
 class Filter:
-    
+
     def __init__(self, start_date, end_date):
         self.start_date = start_date
         self.end_date = end_date
