@@ -29,7 +29,7 @@ def performance():
     data = []
 
     for k, v in average_dict.items():
-        bar_dict = {'strategy': k, 'outcome': v}
+        bar_dict = {'strategy': k, 'outcome': v*100}
 
         data.append(bar_dict)
 
